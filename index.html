@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>RESCUE BAND — 재난 대응요원용 스마트 구조 요청 팔찌</title>
+  <meta name="description" content="위험을 감지하고, 위치를 전송하고, 구조 요청을 시작하는 재난 대응요원용 스마트 구조 요청 팔찌. RESCUE BAND — 구조대원 안전 관제." />
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
+  <!-- Pretendard(가변·동적 서브셋): 한글 UI에 최적화된 서체, 필요한 글자만 로드 -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- ============ 1. 상단 내비게이션 (고정) ============ -->
+  <header class="nav" id="nav">
+    <div class="nav__inner">
+      <a href="#hero" class="nav__brand" aria-label="RESCUE BAND 홈">
+        <span class="nav__brand-logo" aria-hidden="true">
+          <svg viewBox="0 0 28 28" width="20" height="20" fill="none">
+            <path d="M14 3 L23 6.2 V13 C23 18.6 19.2 22.9 14 25 C8.8 22.9 5 18.6 5 13 V6.2 Z" fill="#fff"/>
+            <path d="M10.2 13.8 L12.8 16.4 L18 11" stroke="#2563eb" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </span>
+        <span class="nav__brand-text">
+          <span class="nav__brand-name">RESCUE BAND</span>
+          <span class="nav__brand-sub">구조대원 안전 관제</span>
+        </span>
+      </a>
+
+      <nav class="nav__menu" id="navMenu" aria-label="주요 메뉴">
+        <a href="#product" class="nav__link">Product</a>
+        <a href="#why" class="nav__link">Why It Matters</a>
+        <a href="#features" class="nav__link">Features</a>
+        <a href="#how" class="nav__link">How It Works</a>
+        <a href="#design" class="nav__link">Design</a>
+        <a href="#scenario" class="nav__link">Scenario</a>
+        <a href="#product" class="nav__cta">제품 알아보기</a>
+      </nav>
+
+      <button class="nav__burger" id="navBurger" aria-label="메뉴 열기" aria-expanded="false" aria-controls="navMenu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </header>
+
+  <main>
+
+    <!-- ============ 2. 히어로 섹션 ============ -->
+    <section class="hero" id="hero">
+      <div class="hero__grid">
+        <div class="hero__content reveal">
+          <p class="hero__eyebrow">재난 대응요원용 스마트 구조 요청 팔찌</p>
+          <h1 class="hero__title">보이지 않는 순간까지,<br />대원의 상태를 놓치지 않습니다.</h1>
+          <p class="hero__highlight"><span class="pulse-dot" aria-hidden="true"></span> 버튼을 누르지 못하는 순간에도 구조 요청은 시작됩니다.</p>
+          <div class="hero__actions">
+            <a href="#how" class="btn btn--primary">작동 방식 보기</a>
+            <a href="#features" class="btn btn--ghost">핵심 기능 확인</a>
+          </div>
+        </div>
+
+        <!-- 실제 제품 사진. 파일이 없으면 CSS 대체 그래픽으로 자동 폴백 -->
+        <div class="hero__visual reveal">
+          <div class="hero__stage">
+            <img class="hero__product"
+                 src="assets/band-angle.png"
+                 alt="손목 스트랩에 장착된 RESCUE BAND 구조 요청 팔찌. 대형 SOS 버튼과 오렌지 포인트가 있는 견고한 블랙 케이스."
+                 onerror="this.remove()" />
+            <div class="band" role="img" aria-label="화면이 없는 견고한 구조 요청 팔찌. 두꺼운 스트랩, 돌출된 대형 SOS 버튼, 상태 표시 LED, 견고한 외부 케이스로 구성됩니다.">
+              <div class="band__strap band__strap--top"></div>
+              <div class="band__case">
+                <div class="band__leds" aria-hidden="true">
+                  <span class="led led--green"></span>
+                  <span class="led led--amber"></span>
+                  <span class="led led--red"></span>
+                </div>
+                <span class="band__sos" aria-hidden="true">SOS</span>
+                <div class="band__ring" aria-hidden="true"></div>
+              </div>
+              <div class="band__strap band__strap--bottom"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ 3. 문제 제기 섹션 (Product / Why It Matters 앵커) ============ -->
+    <section class="problem" id="product">
+      <div class="section__wrap">
+        <header class="section__head reveal">
+          <span class="section__kicker" id="why">Why It Matters</span>
+          <h2 class="section__title">재난 현장에서는 구조 요청조차 어려울 수 있습니다.</h2>
+          <p class="section__lead">
+            화재와 붕괴 현장에서는 짙은 연기, 높은 소음, 통신 장애와 구조물로 인해 대원의 위치와 상태를 즉시 확인하기 어렵습니다.
+            대원이 부상을 입거나 의식을 잃으면 무전기를 사용하거나 직접 구조 요청을 보내는 것조차 불가능할 수 있습니다.
+          </p>
+        </header>
+
+        <ul class="problem__grid">
+          <li class="problem__card reveal"><span class="problem__num">01</span><h3>시야 확보가 어려운 현장</h3><p>짙은 연기와 분진 속에서는 동료의 위치와 상태를 눈으로 확인하기 어렵습니다.</p></li>
+          <li class="problem__card reveal"><span class="problem__num">02</span><h3>무전 사용이 어려운 극심한 소음</h3><p>장비 소음과 붕괴음 속에서 음성 교신은 끊기거나 전달되지 않습니다.</p></li>
+          <li class="problem__card reveal"><span class="problem__num">03</span><h3>실내 GPS 위치 오차</h3><p>두꺼운 구조물 내부에서는 위성 신호가 약해져 위치가 부정확해집니다.</p></li>
+          <li class="problem__card reveal"><span class="problem__num">04</span><h3>추락 이후 의식 상실</h3><p>추락이나 충격으로 의식을 잃으면 스스로 구조를 요청할 수 없습니다.</p></li>
+          <li class="problem__card reveal"><span class="problem__num">05</span><h3>유독가스와 산소 부족</h3><p>일산화탄소와 산소 부족은 자각하기 전에 판단력을 흐리게 만듭니다.</p></li>
+          <li class="problem__card reveal"><span class="problem__num">06</span><h3>구조 요청이 지연되는 상황</h3><p>요청이 늦어질수록 대원을 찾고 구조하는 데 걸리는 시간이 길어집니다.</p></li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ============ 4. 핵심 해결책 소개 ============ -->
+    <section class="solution">
+      <div class="section__wrap">
+        <div class="solution__split">
+          <div class="solution__text reveal">
+            <span class="section__kicker">The Solution</span>
+            <h2 class="section__title">착용자의 움직임이 멈춰도,<br />팔찌는 위험을 감지합니다.</h2>
+            <p class="section__lead">RESCUE BAND는 대원의 상태와 주변 환경을 끊임없이 감지하고, 위험이 확인되면 외부 지휘본부로 정보를 전송합니다. 착용자가 직접 요청하지 못하는 순간에도 구조의 흐름은 멈추지 않습니다.</p>
+            <ul class="solution__signals" aria-label="지속 감지 및 전송 정보">
+              <li>현재 위치</li><li>이동 경로</li><li>심박수</li><li>피부 온도</li>
+              <li>산소포화도</li><li>낙상 및 충격</li><li>움직임 여부</li><li>주변 온도</li>
+              <li>일산화탄소</li><li>산소 농도</li><li>유독가스</li>
+            </ul>
+          </div>
+
+          <!-- 정보 전달 흐름 -->
+          <div class="flow reveal" aria-label="정보 전달 흐름">
+            <ol class="flow__list">
+              <li class="flow__step"><span class="flow__icon" aria-hidden="true">◉</span><div><strong>대원 착용</strong><span>팔찌가 대원의 손목에서 감지를 시작합니다.</span></div></li>
+              <li class="flow__step"><span class="flow__icon" aria-hidden="true">⚠</span><div><strong>위험 감지</strong><span>낙상·충격·생체·환경 이상을 포착합니다.</span></div></li>
+              <li class="flow__step"><span class="flow__icon" aria-hidden="true">⇄</span><div><strong>상태 분석</strong><span>수집한 신호를 종합해 위험 여부를 판단합니다.</span></div></li>
+              <li class="flow__step"><span class="flow__icon" aria-hidden="true">📡</span><div><strong>긴급 신호 전송</strong><span>위치와 상태를 외부 지휘본부로 보냅니다.</span></div></li>
+              <li class="flow__step"><span class="flow__icon" aria-hidden="true">✚</span><div><strong>구조팀 위치 확인</strong><span>구조팀이 대원의 위치를 확인하고 투입됩니다.</span></div></li>
+            </ol>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ 5. 주요 기능 섹션 ============ -->
+    <section class="features" id="features">
+      <div class="section__wrap">
+        <header class="section__head reveal">
+          <span class="section__kicker">Features</span>
+          <h2 class="section__title">현장을 위해 설계된 7가지 핵심 기능</h2>
+        </header>
+      </div>
+
+      <!-- 좌우 교차 레이아웃 -->
+      <div class="feature-row">
+        <div class="feature-row__inner reveal">
+          <div class="feature-row__media">
+            <div class="ph ph--sos" aria-label="대형 SOS 버튼을 강조한 제품 이미지 영역"><span>SOS 버튼</span></div>
+          </div>
+          <div class="feature-row__body">
+            <span class="feature-row__index">기능 01</span>
+            <h3>장갑을 벗지 않고 보내는 구조 요청</h3>
+            <p>두꺼운 방화 장갑을 착용한 상태에서도 누를 수 있는 대형 SOS 버튼을 적용합니다. 버튼을 일정 시간 길게 누르면 착용자의 위치, 생체 정보와 주변 환경 정보를 지휘본부에 즉시 전송합니다. 오작동 방지를 위해 보호 구조와 길게 누르는 방식을 적용합니다.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="feature-row feature-row--reverse">
+        <div class="feature-row__inner reveal">
+          <div class="feature-row__media">
+            <div class="ph ph--impact" aria-label="낙상과 충격 감지를 표현한 제품 이미지 영역"><span>충격 감지</span></div>
+          </div>
+          <div class="feature-row__body">
+            <span class="feature-row__index">기능 02</span>
+            <h3>대원이 응답하지 못하면 자동으로 구조를 요청합니다.</h3>
+            <p>가속도 센서와 자이로 센서를 통해 추락이나 강한 충격을 감지합니다. 충격 이후 움직임이 없으면 팔찌가 강한 진동으로 반응을 확인합니다. 대원이 버튼을 누르거나 움직이지 않으면 자동으로 긴급 신호를 전송합니다.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="feature-row">
+        <div class="feature-row__inner reveal">
+          <div class="feature-row__media">
+            <div class="ph ph--locate" aria-label="정밀 위치 추적을 표현한 제품 이미지 영역"><span>위치 추적</span></div>
+          </div>
+          <div class="feature-row__body">
+            <span class="feature-row__index">기능 03</span>
+            <h3>좌표가 아닌, 구조에 필요한 위치를 전달합니다.</h3>
+            <p>실외에서는 GPS를 활용하고, 건물 내부에서는 고도 변화, 이동 경로, 비콘, 중계기와 동료 대원의 상대적 위치를 함께 분석합니다. 위치는 단순한 숫자 좌표가 아니라 사람이 바로 이해할 수 있는 형태로 표시됩니다.</p>
+            <div class="feature-row__quotes">
+              <span>“A동 3층 동쪽 계단 인근”</span>
+              <span>“창고동 지하 1층 북쪽 통로”</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="feature-row feature-row--reverse">
+        <div class="feature-row__inner reveal">
+          <div class="feature-row__media">
+            <div class="ph ph--bio" aria-label="생체 상태 감지를 표현한 제품 이미지 영역"><span>생체 센서</span></div>
+          </div>
+          <div class="feature-row__body">
+            <span class="feature-row__index">기능 04</span>
+            <h3>눈에 보이지 않는 신체 이상까지 확인합니다.</h3>
+            <p>후면 센서를 통해 심박수, 피부 온도, 산소포화도와 착용 여부를 측정합니다. 생체 신호가 위험 수준에 도달하면 착용자의 직접 요청이 없어도 지휘본부에 위험 알림을 전송합니다.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- 나머지 기능은 아이콘 카드로 구성 -->
+      <div class="section__wrap">
+        <ul class="feature-cards">
+          <li class="feature-card reveal">
+            <span class="feature-card__icon" aria-hidden="true">☣</span>
+            <span class="feature-card__tag">기능 05</span>
+            <h3>위험을 느끼기 전에 먼저 경고합니다.</h3>
+            <p>온도, 습도, 일산화탄소, 산소 농도와 유독가스 농도를 측정합니다. 위험 기준을 초과하면 착용자에게 강한 진동과 LED로 경고하고, 외부 지휘본부에도 위험 정보를 전달합니다.</p>
+          </li>
+          <li class="feature-card reveal">
+            <span class="feature-card__icon" aria-hidden="true">⏱</span>
+            <span class="feature-card__tag">기능 06</span>
+            <h3>움직임이 멈춘 시간을 위험 신호로 판단합니다.</h3>
+            <p>일정 시간 동안 움직임이 감지되지 않으면 팔찌가 진동을 보냅니다. 대원이 정해진 시간 안에 반응하지 않으면 의식 저하 또는 부상 가능성이 있다고 판단해 자동 구조 요청을 전송합니다.</p>
+          </li>
+          <li class="feature-card reveal">
+            <span class="feature-card__icon" aria-hidden="true">⇤</span>
+            <span class="feature-card__tag">기능 07</span>
+            <h3>소음과 연기 속에서도 철수 명령을 놓치지 않습니다.</h3>
+            <p>지휘관이 철수 명령을 내리면 모든 대원의 팔찌에 강한 반복 진동과 LED 점멸이 전달됩니다. 일반 경고와 구별되는 별도의 진동 패턴을 적용합니다.</p>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ============ 6. 작동 방식 섹션 ============ -->
+    <section class="how" id="how">
+      <div class="section__wrap">
+        <header class="section__head reveal">
+          <span class="section__kicker">How It Works</span>
+          <h2 class="section__title">위험 감지부터 구조 요청까지</h2>
+          <p class="section__lead">단계를 선택하면 해당 과정을 자세히 확인할 수 있습니다.</p>
+        </header>
+
+        <div class="how__tabs" role="tablist" aria-label="작동 방식 단계">
+          <button class="how__tab is-active" role="tab" aria-selected="true" data-step="0">01 감지</button>
+          <button class="how__tab" role="tab" aria-selected="false" data-step="1">02 판단</button>
+          <button class="how__tab" role="tab" aria-selected="false" data-step="2">03 알림</button>
+          <button class="how__tab" role="tab" aria-selected="false" data-step="3">04 전송</button>
+        </div>
+
+        <div class="how__panels">
+          <article class="how__panel is-active" role="tabpanel" data-step="0">
+            <span class="how__big">01</span>
+            <div><h3>감지</h3><p>팔찌가 위치, 움직임, 생체 상태와 주변 환경을 지속적으로 측정합니다. 평상시에는 저전력으로 조용히 대원의 상태를 살핍니다.</p></div>
+          </article>
+          <article class="how__panel" role="tabpanel" data-step="1" hidden>
+            <span class="how__big">02</span>
+            <div><h3>판단</h3><p>낙상, 강한 충격, 무반응, 생체 이상과 환경 위험을 분석합니다. 단일 신호가 아니라 여러 신호를 종합해 위험 여부를 판단합니다.</p></div>
+          </article>
+          <article class="how__panel" role="tabpanel" data-step="2" hidden>
+            <span class="how__big">03</span>
+            <div><h3>알림</h3><p>착용자에게 진동과 LED로 경고하고 반응 여부를 확인합니다. 상황에 따라 서로 다른 진동 패턴으로 위험의 종류를 구분합니다.</p></div>
+          </article>
+          <article class="how__panel" role="tabpanel" data-step="3" hidden>
+            <span class="how__big">04</span>
+            <div><h3>전송</h3><p>반응이 없거나 위험이 지속되면 위치와 상태를 외부 지휘본부에 전송합니다. 구조팀은 대원의 위치와 마지막 이동 경로를 확인합니다.</p></div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ 7. 제품 디자인 및 구조 ============ -->
+    <section class="design" id="design">
+      <div class="section__wrap">
+        <header class="section__head reveal">
+          <span class="section__kicker">Design</span>
+          <h2 class="section__title">재난 현장을 기준으로 설계된 구조</h2>
+          <p class="section__lead">센서 지점을 누르면 각 요소의 설명이 표시됩니다.</p>
+        </header>
+
+        <div class="design__stage reveal">
+          <!-- 인터랙티브 제품 그래픽 -->
+          <div class="design__viz">
+            <div class="ph ph--product" aria-label="구조 요청 팔찌의 정면 주요 요소를 보여 주는 제품 이미지">
+              <!-- 실제 제품 정면 사진. 파일이 없으면 CSS 대체 그래픽으로 자동 폴백 -->
+              <img class="design__product"
+                   src="assets/band-front.png"
+                   alt="RESCUE BAND 정면. 대형 SOS 버튼, 오렌지 보호 프레임, 측면 버튼과 견고한 블랙 케이스가 보입니다."
+                   onerror="this.remove()" />
+              <div class="band band--flat" aria-hidden="true">
+                <div class="band__strap band__strap--top"></div>
+                <div class="band__case">
+                  <div class="band__leds"><span class="led led--green"></span><span class="led led--amber"></span><span class="led led--red"></span></div>
+                  <span class="band__sos">SOS</span>
+                </div>
+                <div class="band__strap band__strap--bottom"></div>
+              </div>
+              <!-- 클릭 가능한 센서 포인트 (정면 사진 기준 좌표) -->
+              <button class="hotspot" style="top:37%;left:50%" data-target="hs-top" aria-label="상단 요소 설명 보기"><span>1</span></button>
+              <button class="hotspot" style="top:52%;left:45%" data-target="hs-front" aria-label="전면 요소 설명 보기"><span>2</span></button>
+              <button class="hotspot" style="top:47%;left:63%" data-target="hs-side" aria-label="측면 요소 설명 보기"><span>3</span></button>
+              <button class="hotspot" style="top:61%;left:56%" data-target="hs-back" aria-label="후면 요소 설명 보기"><span>4</span></button>
+              <button class="hotspot" style="top:80%;left:50%" data-target="hs-strap" aria-label="스트랩 요소 설명 보기"><span>5</span></button>
+            </div>
+          </div>
+
+          <!-- 설명 패널 -->
+          <div class="design__info">
+            <article class="design__panel is-active" id="hs-top">
+              <h3>상단 · SOS 조작부</h3>
+              <ul><li>대형 SOS 버튼</li><li>오작동 방지 보호 구조</li><li>장갑 착용 상태에서도 누를 수 있는 돌출형 구조</li></ul>
+            </article>
+            <article class="design__panel" id="hs-front" hidden>
+              <h3>전면 · 상태 표시</h3>
+              <ul><li>상태 표시 LED</li><li>배터리 상태 표시</li><li>통신 상태 표시</li><li>위험 단계 표시</li></ul>
+              <p class="design__note">디스플레이 화면이나 숫자 화면 없이 LED만으로 상태를 전달합니다.</p>
+            </article>
+            <article class="design__panel" id="hs-side" hidden>
+              <h3>측면 · 조작 및 충전</h3>
+              <ul><li>전원 버튼</li><li>기능 확인 버튼</li><li>방수형 충전 접점</li></ul>
+            </article>
+            <article class="design__panel" id="hs-back" hidden>
+              <h3>후면 · 센서 및 식별</h3>
+              <ul><li>심박 센서</li><li>피부 온도 센서</li><li>NFC 태그</li><li>QR 코드</li><li>대원 식별 번호</li></ul>
+            </article>
+            <article class="design__panel" id="hs-strap" hidden>
+              <h3>스트랩 · 착용 구조</h3>
+              <ul><li>방염 및 내열 소재</li><li>야간 반사 소재</li><li>방수 및 오염 방지 소재</li><li>보호복 위에 착용 가능한 길이 조절 구조</li><li>쉽게 풀리지 않는 이중 잠금 구조</li><li>강한 힘이 가해질 때 분리되는 안전 해제 구조</li></ul>
+            </article>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ 8. 내구성 강조 섹션 ============ -->
+    <section class="durability">
+      <div class="section__wrap">
+        <header class="section__head section__head--light reveal">
+          <span class="section__kicker">Built for the Field</span>
+          <h2 class="section__title">일상용 스마트워치가 아닌, 재난 현장용 장비</h2>
+        </header>
+
+        <ul class="durability__grid reveal">
+          <li><span aria-hidden="true">🔥</span>내열</li>
+          <li><span aria-hidden="true">💧</span>방수</li>
+          <li><span aria-hidden="true">🌫</span>방진</li>
+          <li><span aria-hidden="true">🛡</span>충격 방지</li>
+          <li><span aria-hidden="true">⛔</span>난연 소재</li>
+          <li><span aria-hidden="true">⚗</span>화학물질·오염 대응</li>
+          <li><span aria-hidden="true">🧯</span>방화복 위 착용</li>
+          <li><span aria-hidden="true">🧤</span>장갑 착용 조작</li>
+        </ul>
+
+        <!-- 비교 표 -->
+        <div class="compare reveal">
+          <table class="compare__table">
+            <caption class="visually-hidden">일반 스마트워치와 RESCUE BAND 비교</caption>
+            <thead>
+              <tr><th scope="col">항목</th><th scope="col">일반 스마트워치</th><th scope="col" class="compare__ours">RESCUE BAND</th></tr>
+            </thead>
+            <tbody>
+              <tr><th scope="row">사용 목적</th><td>일상 편의·건강 관리</td><td class="compare__ours">구조 요청·생존 지원</td></tr>
+              <tr><th scope="row">조작 방식</th><td>터치스크린</td><td class="compare__ours">대형 물리 버튼·장갑 조작</td></tr>
+              <tr><th scope="row">디스플레이</th><td>화면 표시</td><td class="compare__ours">화면 없음 · LED·진동</td></tr>
+              <tr><th scope="row">내구성</th><td>생활 방수 수준</td><td class="compare__ours">내열·방수·방진·충격 방지</td></tr>
+              <tr><th scope="row">자동 사고 감지</th><td>제한적</td><td class="compare__ours">낙상·충격·무반응 자동 감지</td></tr>
+              <tr><th scope="row">환경 센서</th><td>없음</td><td class="compare__ours">가스·산소·온도 감지</td></tr>
+              <tr><th scope="row">실내 위치 추적</th><td>부정확</td><td class="compare__ours">경로·고도·비콘 종합 분석</td></tr>
+              <tr><th scope="row">철수 명령 전달</th><td>없음</td><td class="compare__ours">전용 진동 패턴 전달</td></tr>
+              <tr><th scope="row">비상 전력 모드</th><td>없음</td><td class="compare__ours">예비 전력으로 구조 신호 유지</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ 9. 위치 정보 전달 섹션 ============ -->
+    <section class="locate">
+      <div class="section__wrap">
+        <div class="locate__split">
+          <div class="locate__text reveal">
+            <span class="section__kicker">Location</span>
+            <h2 class="section__title">구조팀이 필요한 것은<br />좌표가 아니라 경로입니다.</h2>
+            <ul class="locate__status">
+              <li><strong>A동 3층 동쪽 계단 인근</strong></li>
+              <li>마지막 이동 감지 <strong>48초 전</strong></li>
+              <li>심박수 이상 및 <strong>무반응 감지</strong></li>
+            </ul>
+            <p class="locate__legend">
+              <span class="dot dot--path"></span> 마지막 이동 경로
+              <span class="dot dot--rescue"></span> 구조팀 접근 경로
+              <span class="dot dot--worker"></span> 대원 위치
+              <span class="dot dot--danger"></span> 위험 구역
+            </p>
+          </div>
+
+          <!-- SVG 건물 평면도 -->
+          <div class="locate__map reveal">
+            <svg viewBox="0 0 420 340" role="img" aria-label="A동 3층 평면도. 진입구, 계단, 위험 구역, 대원의 현재 위치, 마지막 이동 경로, 구조팀 접근 경로를 표시합니다.">
+              <rect x="10" y="10" width="400" height="320" rx="12" fill="#f8fafc" stroke="#d5dae2" stroke-width="2"/>
+              <text x="26" y="36" fill="#475467" font-size="14" font-weight="800">A동 · 3F</text>
+              <!-- 내부 벽 -->
+              <line x1="10" y1="120" x2="260" y2="120" stroke="#d5dae2" stroke-width="2"/>
+              <line x1="260" y1="10" x2="260" y2="230" stroke="#d5dae2" stroke-width="2"/>
+              <line x1="150" y1="230" x2="410" y2="230" stroke="#d5dae2" stroke-width="2"/>
+              <!-- 위험 구역 -->
+              <rect x="270" y="30" width="120" height="80" rx="8" fill="rgba(229,72,77,0.12)" stroke="#e5484d" stroke-dasharray="6 5" stroke-width="2"/>
+              <text x="330" y="74" fill="#e5484d" font-size="12" font-weight="800" text-anchor="middle">위험 구역</text>
+              <!-- 계단 -->
+              <rect x="180" y="150" width="56" height="56" rx="6" fill="#eef1f5" stroke="#94a3b8" stroke-width="2"/>
+              <line x1="180" y1="164" x2="236" y2="164" stroke="#94a3b8"/><line x1="180" y1="178" x2="236" y2="178" stroke="#94a3b8"/><line x1="180" y1="192" x2="236" y2="192" stroke="#94a3b8"/>
+              <text x="208" y="224" fill="#64748b" font-size="11" text-anchor="middle">동쪽 계단</text>
+              <!-- 진입구 -->
+              <rect x="30" y="300" width="60" height="16" rx="3" fill="#f59e0b"/>
+              <text x="60" y="294" fill="#b45309" font-size="11" font-weight="800" text-anchor="middle">진입구</text>
+              <!-- 마지막 이동 경로 (앰버 점선) -->
+              <path d="M60 300 L60 250 L120 250 L120 200 L175 185" fill="none" stroke="#f59e0b" stroke-width="3" stroke-dasharray="7 6" stroke-linecap="round"/>
+              <!-- 구조팀 접근 경로 (블루 점선) -->
+              <path d="M90 316 L90 260 L150 250 L200 205" fill="none" stroke="#2563eb" stroke-width="2.5" stroke-dasharray="2 6" stroke-linecap="round"/>
+              <!-- 대원 위치 (맥동) -->
+              <circle cx="205" cy="180" r="9" fill="#e5484d"/>
+              <circle cx="205" cy="180" r="9" fill="none" stroke="#e5484d" stroke-width="2"><animate attributeName="r" values="9;20;9" dur="2s" repeatCount="indefinite"/><animate attributeName="opacity" values="0.9;0;0.9" dur="2s" repeatCount="indefinite"/></circle>
+              <text x="205" y="160" fill="#1f2a37" font-size="11" font-weight="800" text-anchor="middle">대원</text>
+            </svg>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ 10. 재난 상황 시나리오 ============ -->
+    <section class="scenario" id="scenario">
+      <div class="section__wrap">
+        <header class="section__head section__head--light reveal">
+          <span class="section__kicker">Scenario</span>
+          <h2 class="section__title">구조 요청을 보내지 못한 순간</h2>
+          <p class="section__lead">스크롤을 내리며 하나의 상황이 어떻게 전개되는지 확인해 보세요.</p>
+        </header>
+
+        <ol class="timeline">
+          <li class="timeline__item reveal"><span class="timeline__num">1</span><div><h3>현장 진입</h3><p>대원이 화재 현장에 진입합니다.</p></div></li>
+          <li class="timeline__item reveal"><span class="timeline__num">2</span><div><h3>측정 시작</h3><p>팔찌가 위치, 생체 신호와 환경 수치를 측정합니다.</p></div></li>
+          <li class="timeline__item reveal"><span class="timeline__num">3</span><div><h3>환경 악화</h3><p>건물 내부의 온도와 일산화탄소 농도가 상승합니다.</p></div></li>
+          <li class="timeline__item reveal"><span class="timeline__num">4</span><div><h3>위험 경고</h3><p>팔찌가 대원에게 진동과 LED로 위험을 알립니다.</p></div></li>
+          <li class="timeline__item reveal"><span class="timeline__num">5</span><div><h3>구조물 붕괴</h3><p>대원이 구조물 붕괴로 강한 충격을 받습니다.</p></div></li>
+          <li class="timeline__item reveal"><span class="timeline__num">6</span><div><h3>낙상 감지</h3><p>팔찌가 낙상을 감지하고 반응을 확인합니다.</p></div></li>
+          <li class="timeline__item reveal"><span class="timeline__num">7</span><div><h3>무반응</h3><p>대원이 움직이거나 버튼을 누르지 않습니다.</p></div></li>
+          <li class="timeline__item reveal"><span class="timeline__num">8</span><div><h3>자동 구조 요청</h3><p>팔찌가 자동으로 구조 요청을 전송합니다.</p></div></li>
+          <li class="timeline__item reveal"><span class="timeline__num">9</span><div><h3>위치 확인</h3><p>지휘본부가 건물 동, 층수와 마지막 이동 경로를 확인합니다.</p></div></li>
+          <li class="timeline__item reveal"><span class="timeline__num">10</span><div><h3>구조팀 투입</h3><p>구조팀이 해당 위치로 투입됩니다.</p></div></li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- ============ 11. 의료 정보 기능 ============ -->
+    <section class="medical">
+      <div class="section__wrap">
+        <div class="medical__split">
+          <div class="medical__text reveal">
+            <span class="section__kicker">After Rescue</span>
+            <h2 class="section__title">구조 직후 필요한 정보까지 연결합니다.</h2>
+            <p class="section__lead">팔찌의 NFC 태그 또는 QR 코드를 통해 구조된 대원의 최소 의료 정보를 확인할 수 있습니다. 일반 스마트폰에서는 제한된 정보만 확인되고, 인증된 구조대 전용 기기에서만 상세 정보를 확인할 수 있습니다.</p>
+          </div>
+          <div class="medical__card reveal">
+            <div class="medical__qr" aria-hidden="true">
+              <span class="medical__qr-tag">NFC · QR</span>
+              <div class="qr-grid"></div>
+            </div>
+            <ul class="medical__list">
+              <li>이름 또는 대원 번호</li><li>혈액형</li><li>알레르기</li><li>복용 중인 약</li>
+              <li>기존 질환</li><li>소속</li><li>비상 연락처</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ 12. 배터리 및 충전 섹션 ============ -->
+    <section class="battery">
+      <div class="section__wrap">
+        <div class="battery__split">
+          <div class="battery__media reveal">
+            <div class="ph ph--dock" aria-label="여러 개의 팔찌가 충전 거치대에 장착된 모습의 이미지 영역">
+              <div class="dock">
+                <div class="dock__slot"><span class="dock__band"></span></div>
+                <div class="dock__slot"><span class="dock__band"></span></div>
+                <div class="dock__slot"><span class="dock__band"></span></div>
+                <div class="dock__slot"><span class="dock__band"></span></div>
+              </div>
+              <span>다중 충전 거치대</span>
+            </div>
+          </div>
+          <div class="battery__text reveal">
+            <span class="section__kicker">Power</span>
+            <h2 class="section__title">출동부터 구조 완료까지 유지되는 전력</h2>
+            <ul class="battery__list">
+              <li>화면 제거를 통한 전력 소비 감소</li>
+              <li>평상시 저전력 모드</li>
+              <li>위험 발생 시 위치 추적과 통신 기능 강화</li>
+              <li>무선 충전 또는 방수형 접점 충전</li>
+              <li>출동 전 배터리 자동 점검</li>
+              <li>배터리 부족 시 착용자와 지휘본부에 동시 알림</li>
+              <li>여러 대를 동시에 충전하는 거치대</li>
+              <li>비상 구조 신호를 유지하는 예비 전력 모드</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ 13. 제품 가치 요약 ============ -->
+    <section class="value">
+      <div class="section__wrap">
+        <header class="section__head reveal">
+          <span class="section__kicker">Value</span>
+          <h2 class="section__title">대원을 찾는 시간을 줄이고,<br />구조 가능성을 높입니다.</h2>
+        </header>
+        <ul class="value__grid">
+          <li class="reveal">직접 요청하지 못해도 위험을 감지</li>
+          <li class="reveal">실시간 위치와 마지막 이동 경로 전달</li>
+          <li class="reveal">생체 정보와 환경 정보를 동시에 전송</li>
+          <li class="reveal">현장의 소음과 시야 제한을 진동으로 보완</li>
+          <li class="reveal">구조팀이 필요한 정보를 한 번에 제공</li>
+          <li class="reveal">사고 이후 구조 과정을 자동 기록</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ============ 14. 마지막 CTA 섹션 ============ -->
+    <section class="cta">
+      <div class="cta__inner reveal">
+        <span class="pulse-dot pulse-dot--lg" aria-hidden="true"></span>
+        <h2 class="cta__title">구조 요청을 보내지 못하는 순간까지 대비합니다.</h2>
+        <p class="cta__sub">재난 현장 대응요원의 생존과 구조를 연결하는 스마트 구조 요청 팔찌.</p>
+        <div class="cta__actions">
+          <a href="#features" class="btn btn--primary">제품 기능 다시 보기</a>
+          <a href="#scenario" class="btn btn--ghost btn--ghost-light">작동 시나리오 보기</a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ============ 15. 푸터 ============ -->
+  <footer class="footer">
+    <div class="footer__inner">
+      <div class="footer__brand">
+        <div class="footer__logo">
+          <span class="nav__brand-logo" aria-hidden="true">
+            <svg viewBox="0 0 28 28" width="20" height="20" fill="none">
+              <path d="M14 3 L23 6.2 V13 C23 18.6 19.2 22.9 14 25 C8.8 22.9 5 18.6 5 13 V6.2 Z" fill="#fff"/>
+              <path d="M10.2 13.8 L12.8 16.4 L18 11" stroke="#2563eb" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </span>
+          <span class="nav__brand-name">RESCUE BAND</span>
+        </div>
+        <p>재난 현장 대응요원의 생존과 구조를 연결하는 스마트 구조 요청 팔찌 콘셉트 프로젝트입니다.</p>
+      </div>
+      <nav class="footer__nav" aria-label="푸터 메뉴">
+        <a href="#product">Product</a>
+        <a href="#features">Features</a>
+        <a href="#how">How It Works</a>
+        <a href="#design">Design</a>
+        <a href="#scenario">Scenario</a>
+      </nav>
+    </div>
+    <p class="footer__disclaimer">본 웹사이트와 제품은 실제 의료기기 또는 인증된 재난 구조 장비가 아닌 제품 콘셉트 및 교육·발표용 프로토타입입니다.</p>
+  </footer>
+
+  <!-- 최상단 이동 버튼 -->
+  <button class="to-top" id="toTop" aria-label="최상단으로 이동">↑</button>
+
+  <script src="script.js"></script>
+</body>
+</html>

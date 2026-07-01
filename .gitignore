@@ -1,0 +1,8 @@
+# 로컬 개발/에디터 설정
+.claude/
+node_modules/
+
+# 로그·OS 파일
+*.log
+.DS_Store
+Thumbs.db
