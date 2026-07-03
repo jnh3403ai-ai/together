@@ -1,0 +1,802 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>GGULGUK · AI Autonomous Marine Cleaning Platform</title>
+<style>
+  :root{
+    /* Light base */
+    --white:#ffffff;
+    --grey:#f4f7fb;
+    --grey2:#e9eef5;
+    --ink:#0b1220;
+    --ink2:#1a2536;
+    --muted:#5c6b82;
+    --muted2:#8a99b0;
+    --line:#e3e9f1;
+    /* Dark base */
+    --navy:#050a14;
+    --navy2:#0a1424;
+    --navy-panel:#0f1d33;
+    --navy-line:#1c3055;
+    --dtext:#eaf2fd;
+    --dmuted:#93a8c8;
+    /* Accents */
+    --blue:#2F80FF;
+    --cyan:#00C8FF;
+    --grad:linear-gradient(135deg,#2F80FF,#00C8FF);
+    --glow:0 0 40px rgba(0,200,255,.35);
+    --maxw:1200px;
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;margin:0;padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Apple SD Gothic Neo",Roboto,"Malgun Gothic",sans-serif;
+    color:var(--ink);
+    background:var(--white);
+    -webkit-font-smoothing:antialiased;
+    line-height:1.65;
+    overflow-x:hidden;
+  }
+  a{color:inherit;text-decoration:none;}
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 28px;}
+  img{display:block;max-width:100%;}
+
+  /* ===== NAV ===== */
+  header.nav{
+    position:fixed;top:0;left:0;right:0;z-index:100;
+    transition:.4s;
+    background:transparent;
+  }
+  header.nav.solid{
+    background:rgba(255,255,255,.82);
+    backdrop-filter:blur(16px);
+    border-bottom:1px solid var(--line);
+  }
+  .nav-inner{display:flex;align-items:center;height:70px;gap:16px;}
+  /* ===== Wordmark logo ===== */
+  .brand{display:flex;align-items:center;gap:0;font-weight:900;letter-spacing:.3px;font-size:22px;color:#fff;transition:.4s;}
+  .brand .bl{color:#46A4E6;}                              /* GGUL — blue */
+  .brand .bg{color:rgba(255,255,255,.9);transition:color .4s;} /* G / K — grey (light over hero) */
+  header.nav.solid .brand .bg{color:#c7ced7;}
+  .brand .bk{width:1.18em;height:1.18em;margin:0 .02em;position:relative;top:-.04em;}
+  .brand .bk .sq{fill:#cfe6f9;stroke:#5aa9e8;stroke-width:2.2;stroke-linejoin:round;}
+  .brand .bk .bin{fill:none;stroke:#9cc7ec;stroke-width:2.4;stroke-linejoin:round;stroke-linecap:round;}
+  .nav-links{margin-left:auto;display:flex;gap:4px;align-items:center;}
+  .nav-links a{padding:9px 15px;border-radius:10px;font-size:13.5px;font-weight:600;color:rgba(255,255,255,.82);transition:.2s;}
+  header.nav.solid .nav-links a{color:var(--muted);}
+  .nav-links a:hover{color:#fff;background:rgba(255,255,255,.14);}
+  header.nav.solid .nav-links a:hover{color:var(--ink);background:var(--grey);}
+  .nav-cta{background:var(--grad)!important;color:#fff!important;font-weight:800!important;box-shadow:0 6px 20px rgba(47,128,255,.4);}
+  header.nav.solid .nav-cta{color:#fff!important;}
+  .burger{display:none;margin-left:auto;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);color:#fff;width:44px;height:44px;border-radius:12px;font-size:18px;cursor:pointer;}
+  header.nav.solid .burger{color:var(--ink);border-color:var(--line);background:var(--grey);}
+  @media(max-width:900px){
+    .nav-links{display:none;position:absolute;top:70px;left:0;right:0;flex-direction:column;
+      background:rgba(10,20,36,.97);backdrop-filter:blur(16px);padding:14px;gap:4px;}
+    .nav-links.open{display:flex;}
+    .nav-links a{padding:14px 16px;color:#fff!important;}
+    .burger{display:block;}
+  }
+
+  /* ===== SECTION 1: HERO (dark ocean) ===== */
+  .hero{
+    position:relative;min-height:100vh;display:grid;place-items:center;
+    background:var(--navy);overflow:hidden;text-align:center;
+  }
+  .hero-bg{
+    position:absolute;inset:0;
+    background:
+      radial-gradient(1200px 760px at 50% 12%, rgba(24,70,120,.55), transparent 66%),
+      radial-gradient(900px 500px at 78% 88%, rgba(0,120,180,.28), transparent 60%),
+      linear-gradient(180deg,#071426 0%,#061020 42%,#040a16 100%);
+    transition:filter 1.4s ease;
+  }
+  .hero.clean .hero-bg{filter:brightness(1.15) saturate(1.12);}
+  /* animated ocean waves */
+  .waves{position:absolute;left:0;right:0;bottom:0;height:60%;z-index:2;opacity:.9;}
+  .waves svg{position:absolute;left:0;width:200%;height:100%;}
+  .waves .w1{bottom:0;fill:rgba(20,60,110,.5);animation:wavemove 14s linear infinite;}
+  .waves .w2{bottom:0;fill:rgba(12,40,80,.55);animation:wavemove 20s linear infinite reverse;}
+  .waves .w3{bottom:0;fill:rgba(6,22,46,.7);animation:wavemove 28s linear infinite;}
+  @keyframes wavemove{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+  .hero-shimmer{position:absolute;inset:auto 0 0 0;height:56%;z-index:1;
+    background:repeating-linear-gradient(100deg,transparent,transparent 60px,rgba(0,200,255,.03) 62px,transparent 66px);
+    animation:shimmer 8s linear infinite;}
+  @keyframes shimmer{from{background-position:0 0}to{background-position:400px 0}}
+  .hero-vignette{position:absolute;inset:0;z-index:4;background:radial-gradient(circle at 50% 50%,transparent 32%,rgba(4,9,18,.78));}
+  .hero-inner{position:relative;z-index:5;padding:0 24px;}
+  .hero h1{
+    font-size:clamp(30px,5.5vw,62px);font-weight:900;letter-spacing:-1px;line-height:1.12;color:#fff;
+    text-shadow:0 4px 40px rgba(0,0,0,.6);
+  }
+  .hero .sub{margin-top:26px;font-size:clamp(15px,2vw,19px);color:rgba(220,232,248,.82);max-width:600px;margin-left:auto;margin-right:auto;font-weight:400;}
+  .scroll-hint{position:absolute;bottom:34px;left:50%;transform:translateX(-50%);z-index:6;color:rgba(255,255,255,.6);font-size:12px;letter-spacing:2px;font-weight:600;}
+  .scroll-hint .mouse{width:24px;height:38px;border:2px solid rgba(255,255,255,.5);border-radius:14px;margin:0 auto 10px;position:relative;}
+  .scroll-hint .mouse::before{content:"";position:absolute;top:7px;left:50%;transform:translateX(-50%);width:4px;height:8px;border-radius:2px;background:var(--cyan);animation:scrolldot 1.8s infinite;}
+  @keyframes scrolldot{0%{opacity:0;transform:translate(-50%,0)}30%{opacity:1}60%{opacity:1;transform:translate(-50%,10px)}100%{opacity:0;transform:translate(-50%,14px)}}
+
+  /* floating trash */
+  .trash{position:absolute;z-index:3;opacity:.9;transition:opacity 1s ease, transform 1s ease;pointer-events:none;filter:drop-shadow(0 4px 8px rgba(0,0,0,.5));}
+  .hero.clean .trash{opacity:0;transform:translateY(40px) scale(.6);}
+  .hero.clean .hero-bg{filter:saturate(1.05) brightness(.72);}
+
+  /* ===== SECTION 2: GGULGUK 등장 ===== */
+  .reveal-sec{
+    position:relative;min-height:100vh;display:grid;place-items:center;text-align:center;
+    background:radial-gradient(1000px 600px at 50% 30%,#0b1a30,#050a14 75%);
+    color:#fff;overflow:hidden;padding:80px 0;
+  }
+  .reveal-sec .glow-orb{position:absolute;width:900px;height:900px;border-radius:50%;
+    background:radial-gradient(closest-side,rgba(0,200,255,.16),transparent 70%);
+    top:50%;left:50%;transform:translate(-50%,-50%) scale(.4);opacity:0;transition:1.6s cubic-bezier(.2,.7,.2,1);}
+  .reveal-sec.in .glow-orb{opacity:1;transform:translate(-50%,-50%) scale(1);}
+  .reveal-img{position:relative;z-index:4;max-width:820px;width:92%;border-radius:20px;overflow:hidden;
+    box-shadow:0 40px 100px rgba(0,0,0,.7), 0 0 0 1px rgba(0,200,255,.15);
+    opacity:0;transform:scale(1.12) translateY(30px);filter:brightness(.4) blur(6px);transition:1.6s cubic-bezier(.2,.7,.2,1);}
+  .reveal-sec.in .reveal-img{opacity:1;transform:scale(1) translateY(0);filter:brightness(1) blur(0);}
+  /* AI scan line */
+  .scan{position:absolute;left:0;right:0;height:3px;background:linear-gradient(90deg,transparent,var(--cyan),transparent);
+    box-shadow:0 0 20px var(--cyan);opacity:0;z-index:6;}
+  .reveal-sec.in .scan{animation:scanmove 2.6s ease-in-out .8s 2;}
+  @keyframes scanmove{0%{top:8%;opacity:0}10%{opacity:1}90%{opacity:1}100%{top:92%;opacity:0}}
+  /* detection boxes */
+  .det{position:absolute;z-index:7;border:2px solid var(--cyan);border-radius:4px;box-shadow:0 0 12px rgba(0,200,255,.5);opacity:0;}
+  .det span{position:absolute;top:-22px;left:-1px;background:var(--cyan);color:#04121f;font-size:10px;font-weight:800;padding:2px 7px;border-radius:4px;white-space:nowrap;}
+  .reveal-sec.in .det{animation:detpop .5s forwards;}
+  .reveal-sec.in .det:nth-child(1){animation-delay:1.6s;}
+  @keyframes detpop{from{opacity:0;transform:scale(.8)}to{opacity:1;transform:scale(1)}}
+  .reveal-copy{position:relative;z-index:5;margin-top:48px;opacity:0;transform:translateY(24px);transition:1s .9s;}
+  .reveal-sec.in .reveal-copy{opacity:1;transform:none;}
+  .reveal-copy h2{font-size:clamp(24px,3.4vw,40px);font-weight:900;letter-spacing:-.5px;}
+  .reveal-copy h2 .g{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent;}
+  .reveal-copy p{margin-top:14px;color:var(--dmuted);font-size:clamp(14px,1.6vw,17px);}
+
+  /* ===== SPEC BAND ===== */
+  .spec-sec{background:linear-gradient(180deg,#050a14,#081222);color:#fff;padding:70px 0 78px;border-top:1px solid var(--navy-line);}
+  .spec-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:20px;}
+  .spec{text-align:center;position:relative;}
+  .spec+.spec::before{content:"";position:absolute;left:-10px;top:14%;height:72%;width:1px;background:var(--navy-line);}
+  .spec .sv{font-size:clamp(24px,2.7vw,34px);font-weight:900;line-height:1;font-variant-numeric:tabular-nums;
+    background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent;}
+  .spec .sv small{font-size:14px;-webkit-text-fill-color:var(--dmuted);margin-left:2px;font-weight:700;}
+  .spec .sl{margin-top:12px;color:var(--dmuted);font-size:13px;font-weight:600;letter-spacing:.3px;}
+  .spec-note{text-align:center;margin-top:40px;color:var(--muted2);font-size:13px;letter-spacing:.3px;}
+  @media(max-width:820px){.spec-grid{grid-template-columns:repeat(3,1fr);gap:26px 12px;} .spec:nth-child(4)::before,.spec:nth-child(n+4)::before{display:none;}}
+  @media(max-width:460px){.spec-grid{grid-template-columns:repeat(2,1fr);}}
+
+  /* ===== Generic light section ===== */
+  .sec{padding:120px 0;}
+  .sec-head{max-width:680px;margin:0 auto 64px;text-align:center;}
+  .tag{display:inline-block;font-size:12px;font-weight:800;letter-spacing:2.5px;text-transform:uppercase;
+    background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent;margin-bottom:16px;}
+  .sec-head h2{font-size:clamp(28px,4vw,44px);font-weight:900;letter-spacing:-1px;line-height:1.15;}
+  .sec-head p{margin-top:16px;color:var(--muted);font-size:16px;}
+  .grey-bg{background:var(--grey);}
+
+  /* ===== SECTION 3: 핵심 기능 cards ===== */
+  .feat-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:24px;}
+  .feat{position:relative;background:var(--white);border:1px solid var(--line);border-radius:24px;overflow:hidden;
+    box-shadow:0 10px 40px rgba(20,40,80,.06);transition:.35s;}
+  .feat:hover{transform:translateY(-6px);box-shadow:0 24px 60px rgba(20,40,80,.14);border-color:#cfe0f5;}
+  .feat-visual{height:200px;position:relative;overflow:hidden;background:linear-gradient(135deg,#0a1424,#12233f);display:grid;place-items:center;}
+  .feat-body{padding:30px 32px 34px;}
+  .feat-body .n{font-size:12px;font-weight:800;color:var(--blue);letter-spacing:1.5px;}
+  .feat-body h3{font-size:22px;font-weight:850;margin-top:8px;letter-spacing:-.4px;}
+  .feat-body p{margin-top:10px;color:var(--muted);font-size:14.5px;}
+  .chips{display:flex;gap:8px;flex-wrap:wrap;margin-top:16px;}
+  .chip{font-size:12px;font-weight:700;padding:5px 11px;border-radius:999px;background:var(--grey);color:var(--ink2);border:1px solid var(--line);}
+
+  /* feature visual animations */
+  .cam-frame{width:70%;height:70%;position:relative;}
+  .bb{position:absolute;border:2px solid var(--cyan);border-radius:3px;box-shadow:0 0 10px rgba(0,200,255,.5);}
+  .bb span{position:absolute;top:-19px;left:-2px;background:var(--cyan);color:#04121f;font-size:9px;font-weight:800;padding:1px 6px;border-radius:3px;}
+  .bb.b1{top:14%;left:10%;width:34%;height:30%;animation:blink 2.4s infinite;}
+  .bb.b2{top:52%;left:52%;width:30%;height:34%;animation:blink 2.4s infinite .6s;}
+  .bb.b3{top:20%;left:58%;width:24%;height:22%;animation:blink 2.4s infinite 1.2s;}
+  @keyframes blink{0%,100%{opacity:.35}50%{opacity:1}}
+  .scanbar{position:absolute;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--cyan),transparent);animation:scanv 2.6s linear infinite;}
+  @keyframes scanv{0%{top:0}100%{top:100%}}
+  /* intake arrows */
+  .intake{display:flex;gap:12px;align-items:center;}
+  .intake .arw{width:8px;height:38px;border-radius:4px;background:var(--cyan);opacity:.3;animation:flow 1.4s infinite;}
+  .intake .arw:nth-child(2){animation-delay:.15s}.intake .arw:nth-child(3){animation-delay:.3s}
+  .intake .arw:nth-child(4){animation-delay:.45s}.intake .arw:nth-child(5){animation-delay:.6s}
+  @keyframes flow{0%,100%{opacity:.25;transform:scaleY(.7)}50%{opacity:1;transform:scaleY(1.15)}}
+  /* propeller */
+  .prop{width:88px;height:88px;position:relative;}
+  .prop svg{width:100%;height:100%;animation:spin 3s linear infinite;}
+  @keyframes spin{to{transform:rotate(360deg)}}
+  /* dock rings */
+  .dock{width:120px;height:120px;position:relative;display:grid;place-items:center;}
+  .dock .ring{position:absolute;border:2px solid rgba(0,200,255,.5);border-radius:50%;animation:ping 2.4s ease-out infinite;}
+  .dock .ring:nth-child(2){animation-delay:.8s}.dock .ring:nth-child(3){animation-delay:1.6s}
+  @keyframes ping{0%{width:20px;height:20px;opacity:1}100%{width:120px;height:120px;opacity:0}}
+  .dock .core{width:20px;height:20px;border-radius:50%;background:var(--grad);box-shadow:0 0 20px var(--cyan);z-index:2;}
+
+  /* ===== SECTION 4: Water to Land ===== */
+  .w2l{background:var(--navy);color:#fff;position:relative;overflow:hidden;padding:130px 0;}
+  .w2l .split{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center;}
+  .w2l h2{font-size:clamp(30px,4.4vw,52px);font-weight:900;letter-spacing:-1px;line-height:1.1;}
+  .w2l h2 .g{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent;}
+  .w2l .lead{margin-top:20px;color:var(--dmuted);font-size:17px;max-width:440px;}
+  .w2l .modes{display:flex;gap:14px;margin-top:32px;flex-wrap:wrap;}
+  .mode{flex:1;min-width:150px;background:rgba(255,255,255,.04);border:1px solid var(--navy-line);border-radius:16px;padding:20px;}
+  .mode .mi{width:42px;height:42px;border-radius:12px;background:rgba(0,200,255,.12);display:grid;place-items:center;margin-bottom:12px;}
+  .mode .mi svg{width:24px;height:24px;stroke:var(--cyan);fill:none;stroke-width:1.8;}
+  .mode h4{font-size:16px;font-weight:800;}
+  .mode p{color:var(--dmuted);font-size:13px;margin-top:4px;}
+  /* transform stage */
+  .stage{position:relative;height:360px;border-radius:24px;overflow:hidden;
+    background:linear-gradient(180deg,#0c1c34 0%,#0c1c34 55%,#0a1526 55%,#08111f 100%);
+    border:1px solid var(--navy-line);}
+  .stage .waterline{position:absolute;left:0;right:0;top:55%;height:2px;background:linear-gradient(90deg,transparent,var(--cyan),transparent);opacity:.6;}
+  .stage .veh{position:absolute;left:0;top:38%;width:150px;transition:none;}
+  .stage .wheel{transform-origin:center;}
+  .stage .label{position:absolute;bottom:16px;left:0;right:0;text-align:center;font-size:12px;font-weight:700;letter-spacing:2px;color:rgba(255,255,255,.5);}
+
+  /* ===== SECTION 5: Dashboard ===== */
+  .dash-sec{background:var(--navy2);color:var(--dtext);padding:120px 0;}
+  .dashboard{background:linear-gradient(180deg,#0b1626,#081120);border:1px solid var(--navy-line);border-radius:24px;overflow:hidden;box-shadow:0 40px 100px rgba(0,0,0,.5);}
+  .dash-top{display:flex;align-items:center;gap:12px;padding:16px 22px;border-bottom:1px solid var(--navy-line);background:rgba(255,255,255,.02);}
+  .dash-top .dot{width:9px;height:9px;border-radius:50%;background:#2ee6a0;box-shadow:0 0 8px #2ee6a0;animation:pulse 1.8s infinite;}
+  @keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+  .dash-top b{font-size:14px;font-weight:800;}
+  .dash-top .live{margin-left:auto;font-size:12px;color:#2ee6a0;font-weight:700;}
+  .dash-grid{display:grid;grid-template-columns:1.4fr 1fr;gap:1px;background:var(--navy-line);}
+  .dash-map{background:#08101d;position:relative;min-height:400px;overflow:hidden;}
+  .map-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(47,128,255,.08) 1px,transparent 1px),linear-gradient(90deg,rgba(47,128,255,.08) 1px,transparent 1px);background-size:38px 38px;}
+  .map-water{position:absolute;inset:0;background:radial-gradient(600px 400px at 30% 40%,rgba(47,128,255,.12),transparent 70%);}
+  .bot{position:absolute;width:14px;height:14px;}
+  .bot .b-core{width:14px;height:14px;border-radius:50%;background:var(--grad);box-shadow:0 0 14px var(--cyan);}
+  .bot .b-ping{position:absolute;inset:0;border-radius:50%;border:1.5px solid rgba(0,200,255,.6);animation:botping 2.4s ease-out infinite;}
+  @keyframes botping{0%{transform:scale(1);opacity:.9}100%{transform:scale(4);opacity:0}}
+  .bot .b-label{position:absolute;top:-26px;left:50%;transform:translateX(-50%);white-space:nowrap;font-size:10px;font-weight:700;color:var(--cyan);background:rgba(0,0,0,.5);padding:2px 7px;border-radius:5px;}
+  .path{position:absolute;inset:0;}
+  .dash-side{background:#0a1424;padding:22px;display:flex;flex-direction:column;gap:14px;}
+  .d-card{background:rgba(255,255,255,.03);border:1px solid var(--navy-line);border-radius:14px;padding:16px 18px;}
+  .d-card .dl{font-size:11px;color:var(--dmuted);font-weight:700;letter-spacing:.5px;text-transform:uppercase;}
+  .d-card .dv{font-size:26px;font-weight:850;margin-top:4px;font-variant-numeric:tabular-nums;}
+  .d-card .dv small{font-size:14px;color:var(--dmuted);margin-left:3px;}
+  .d-card.blue .dv{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent;}
+  .bar{height:7px;border-radius:4px;background:rgba(255,255,255,.08);margin-top:12px;overflow:hidden;}
+  .bar i{display:block;height:100%;border-radius:4px;background:var(--grad);width:0;transition:width 1.6s ease;}
+  .batt-row{display:flex;align-items:center;gap:10px;margin-top:10px;font-size:12px;color:var(--dmuted);}
+  .mini{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+
+  /* ===== SECTION 6: Process ===== */
+  .proc{display:grid;grid-template-columns:repeat(7,1fr);gap:10px;align-items:stretch;}
+  .pstep{background:var(--white);border:1px solid var(--line);border-radius:18px;padding:22px 14px;text-align:center;position:relative;transition:.3s;}
+  .pstep:hover{transform:translateY(-5px);box-shadow:0 16px 40px rgba(20,40,80,.1);border-color:#cfe0f5;}
+  .pstep .pn{font-size:11px;font-weight:800;color:var(--blue);}
+  .pstep .pico{width:46px;height:46px;margin:10px auto 12px;border-radius:14px;background:var(--grad);display:grid;place-items:center;box-shadow:0 6px 18px rgba(47,128,255,.35);}
+  .pstep .pico svg{width:24px;height:24px;stroke:#fff;fill:none;stroke-width:1.8;}
+  .pstep h4{font-size:13.5px;font-weight:800;}
+  @media(max-width:980px){.proc{grid-template-columns:repeat(4,1fr);}}
+  @media(max-width:560px){.proc{grid-template-columns:repeat(2,1fr);}}
+
+  /* ===== SECTION 7: Data ===== */
+  .data-sec{background:linear-gradient(180deg,var(--navy2),var(--navy));color:#fff;padding:120px 0;}
+  .data-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:1px;background:var(--navy-line);border:1px solid var(--navy-line);border-radius:20px;overflow:hidden;}
+  .data-cell{background:#0a1424;padding:36px 20px;text-align:center;}
+  .data-cell .num{font-size:clamp(28px,3.6vw,44px);font-weight:900;line-height:1;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent;font-variant-numeric:tabular-nums;}
+  .data-cell .num small{font-size:16px;-webkit-text-fill-color:var(--dmuted);margin-left:3px;}
+  .data-cell .dlab{margin-top:12px;color:var(--dmuted);font-size:13px;font-weight:600;}
+  .chart{margin-top:40px;background:#0a1424;border:1px solid var(--navy-line);border-radius:20px;padding:32px;}
+  .chart h4{font-size:15px;font-weight:800;margin-bottom:24px;color:var(--dtext);}
+  .bars{display:flex;align-items:flex-end;gap:14px;height:180px;}
+  .bars .col{flex:1;display:flex;flex-direction:column;align-items:center;gap:8px;height:100%;justify-content:flex-end;}
+  .bars .col .b{width:100%;max-width:46px;border-radius:8px 8px 0 0;background:var(--grad);height:0;transition:height 1.2s cubic-bezier(.2,.7,.2,1);}
+  .bars .col .cl{font-size:11px;color:var(--dmuted);font-weight:600;}
+  @media(max-width:760px){.data-grid{grid-template-columns:repeat(2,1fr);} .data-cell:last-child{grid-column:span 2;}}
+
+  /* ===== SECTION 8: 적용 분야 ===== */
+  .apps{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;}
+  .app{background:var(--white);border:1px solid var(--line);border-radius:18px;padding:26px 22px;transition:.3s;}
+  .app:hover{transform:translateY(-5px);box-shadow:0 16px 40px rgba(20,40,80,.1);border-color:#cfe0f5;background:linear-gradient(180deg,#fff,#f7fbff);}
+  .app .ai{width:48px;height:48px;border-radius:14px;background:var(--grey);display:grid;place-items:center;margin-bottom:14px;}
+  .app .ai svg{width:26px;height:26px;stroke:var(--blue);fill:none;stroke-width:1.7;}
+  .app h4{font-size:16px;font-weight:800;}
+  .app p{color:var(--muted);font-size:13px;margin-top:5px;}
+  @media(max-width:900px){.apps{grid-template-columns:repeat(2,1fr);}}
+
+  /* ===== SECTION 9: Final ===== */
+  .final{position:relative;min-height:100vh;display:grid;place-items:center;text-align:center;background:var(--navy);overflow:hidden;}
+  .final-bg{position:absolute;inset:0;background:
+      linear-gradient(180deg,rgba(5,10,20,.35),rgba(5,10,20,.75)),
+      url('images/ocean.jpg');background-size:cover;background-position:center;filter:saturate(1.1) brightness(.85);transform:scale(1.05);}
+  .final-inner{position:relative;z-index:5;padding:0 24px;}
+  .final h2{font-size:clamp(30px,5vw,60px);font-weight:900;color:#fff;letter-spacing:-1px;line-height:1.1;text-shadow:0 4px 40px rgba(0,0,0,.5);}
+  .final h2 .g{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent;}
+  .final p{margin-top:20px;color:rgba(230,240,252,.9);font-size:18px;}
+  .final .bigbrand{margin-top:36px;font-size:clamp(40px,8vw,88px);font-weight:900;letter-spacing:1px;
+    display:flex;align-items:center;justify-content:center;}
+  .final .bigbrand .bl{color:#46A4E6;}
+  .final .bigbrand .bg{color:#dfe4ea;}
+  .final .bigbrand .bk{width:1.14em;height:1.14em;margin:0 .02em;position:relative;top:-.04em;filter:drop-shadow(0 0 18px rgba(0,200,255,.35));}
+  .final .bigbrand .bk .sq{fill:#cfe6f9;stroke:#5aa9e8;stroke-width:2.2;stroke-linejoin:round;}
+  .final .bigbrand .bk .bin{fill:none;stroke:#bfe0f7;stroke-width:2.4;stroke-linejoin:round;stroke-linecap:round;}
+  .final .btn-final{margin-top:40px;}
+
+  .btn{display:inline-flex;align-items:center;gap:9px;padding:15px 28px;border-radius:14px;font-weight:800;font-size:15px;cursor:pointer;border:1px solid transparent;transition:.25s;}
+  .btn.primary{background:var(--grad);color:#fff;box-shadow:0 12px 34px rgba(47,128,255,.45);}
+  .btn.primary:hover{transform:translateY(-2px);box-shadow:0 20px 44px rgba(47,128,255,.6);}
+  .btn.ghost{background:rgba(255,255,255,.1);border-color:rgba(255,255,255,.3);color:#fff;}
+  .btn.ghost:hover{background:rgba(255,255,255,.2);}
+
+  /* ===== FOOTER ===== */
+  footer{background:var(--navy);color:var(--dmuted);padding:50px 0 40px;border-top:1px solid var(--navy-line);}
+  .foot{display:flex;justify-content:space-between;align-items:center;gap:20px;flex-wrap:wrap;font-size:13px;}
+  .foot .fb{font-weight:900;font-size:20px;letter-spacing:.5px;display:inline-flex;align-items:center;color:#fff;}
+  .foot .fb .bl{color:#46A4E6;}
+  .foot .fb .bg{color:#cfd5dd;}
+  .foot .fb .bk{width:1.14em;height:1.14em;margin:0 .02em;position:relative;top:-.04em;}
+  .foot .fb .bk .sq{fill:#cfe6f9;stroke:#5aa9e8;stroke-width:2.2;stroke-linejoin:round;}
+  .foot .fb .bk .bin{fill:none;stroke:#9cc7ec;stroke-width:2.4;stroke-linejoin:round;stroke-linecap:round;}
+
+  /* reveal util */
+  .reveal{opacity:0;transform:translateY(30px);transition:.8s cubic-bezier(.2,.7,.2,1);}
+  .reveal.in{opacity:1;transform:none;}
+  .reveal.d1{transition-delay:.1s}.reveal.d2{transition-delay:.2s}.reveal.d3{transition-delay:.3s}
+
+  @media(max-width:900px){
+    .feat-grid{grid-template-columns:1fr;}
+    .w2l .split,.dash-grid{grid-template-columns:1fr;}
+    .apps{grid-template-columns:repeat(2,1fr);}
+    .data-grid{grid-template-columns:repeat(2,1fr);}
+    .sec{padding:80px 0;}
+  }
+</style>
+</head>
+<body>
+
+<!-- ===== NAV ===== -->
+<header class="nav" id="nav">
+  <div class="wrap nav-inner">
+    <a href="#top" class="brand" aria-label="GGULGUK">
+      <span class="bl">GGUL</span><span class="bg">G</span><svg class="bk" viewBox="0 0 30 32"><rect class="sq" x="8" y="1" width="6.2" height="6.2" rx="1.8"/><rect class="sq" x="15.8" y="1" width="6.2" height="6.2" rx="1.8"/><path class="bin" d="M4 12.5Q4 11 5.6 11H24.4Q26 11 26 12.5L24.5 23.6Q24 29.5 18.3 29.5H11.7Q6 29.5 5.5 23.6Z"/></svg><span class="bg">K</span>
+    </a>
+    <button class="burger" onclick="document.getElementById('navlinks').classList.toggle('open')">☰</button>
+    <nav class="nav-links" id="navlinks">
+      <a href="#features">핵심 기능</a>
+      <a href="#w2l">육상 이동</a>
+      <a href="#dashboard">실시간 관제</a>
+      <a href="#process">운영 프로세스</a>
+      <a href="#applications">적용 분야</a>
+      <a href="dashboard.html" class="nav-cta">관제 시스템 →</a>
+    </nav>
+  </div>
+</header>
+
+<!-- ===== 1. HERO ===== -->
+<section class="hero" id="top">
+  <div class="hero-bg"></div>
+  <div class="hero-shimmer"></div>
+  <div class="waves">
+    <svg class="w1" viewBox="0 0 1200 200" preserveAspectRatio="none"><path d="M0 90 C150 40 350 140 600 90 C850 40 1050 140 1200 90 L1200 200 L0 200 Z"/></svg>
+    <svg class="w2" viewBox="0 0 1200 200" preserveAspectRatio="none"><path d="M0 110 C200 60 400 160 600 110 C800 60 1000 160 1200 110 L1200 200 L0 200 Z"/></svg>
+    <svg class="w3" viewBox="0 0 1200 200" preserveAspectRatio="none"><path d="M0 130 C180 90 420 180 600 130 C820 80 980 180 1200 130 L1200 200 L0 200 Z"/></svg>
+  </div>
+  <div class="hero-vignette"></div>
+
+  <!-- floating trash SVGs -->
+  <svg class="trash" style="top:62%;left:18%;width:60px" viewBox="0 0 60 30"><rect x="4" y="6" width="52" height="16" rx="8" fill="#cfd6de" opacity=".9"/><rect x="12" y="2" width="8" height="8" rx="2" fill="#9aa6b4"/></svg>
+  <svg class="trash" style="top:72%;left:64%;width:50px" viewBox="0 0 50 24"><rect x="2" y="4" width="46" height="14" rx="7" fill="#b7c0cb" opacity=".85"/></svg>
+  <svg class="trash" style="top:56%;left:78%;width:44px" viewBox="0 0 44 44"><path d="M6 14h32l-3 26H9L6 14Z" fill="#a6b1bd" opacity=".8"/><rect x="10" y="8" width="24" height="7" rx="3" fill="#8a95a2"/></svg>
+  <svg class="trash" style="top:80%;left:38%;width:70px" viewBox="0 0 70 20"><path d="M2 10 Q18 2 35 10 T68 10" stroke="#8f9aa6" stroke-width="3" fill="none" opacity=".7"/><path d="M2 15 Q18 7 35 15 T68 15" stroke="#8f9aa6" stroke-width="2" fill="none" opacity=".5"/></svg>
+  <svg class="trash" style="top:66%;left:46%;width:38px" viewBox="0 0 38 38"><rect x="6" y="6" width="26" height="26" rx="4" fill="#c2cad3" opacity=".8"/></svg>
+
+  <div class="hero-inner">
+    <h1>바다는 스스로<br>깨끗해질 수 없습니다.</h1>
+    <p class="sub">매년 수백만 톤의 해양 쓰레기가 우리의 바다를 오염시키고 있습니다.</p>
+  </div>
+
+  <div class="scroll-hint">
+    <div class="mouse"></div>
+    SCROLL
+  </div>
+</section>
+
+<!-- ===== 2. GGULGUK 등장 ===== -->
+<section class="reveal-sec" id="intro">
+  <div class="glow-orb"></div>
+  <div style="position:relative;">
+    <div class="reveal-img">
+      <img src="images/ggulguk-front.png" alt="GGULGUK 해양 청소 로봇" onerror="this.style.display='none'">
+      <div class="scan"></div>
+      <div class="det" style="top:52%;left:44%;width:15%;height:16%;"><span>PLASTIC 98%</span></div>
+      <div class="det" style="top:60%;left:60%;width:12%;height:12%;"><span>BOTTLE 96%</span></div>
+      <div class="det" style="top:30%;left:48%;width:10%;height:9%;"><span>CAMERA · SCAN</span></div>
+    </div>
+  </div>
+  <div class="reveal-copy">
+    <h2><span class="g">GGULGUK</span> — AI Autonomous Marine Cleaning Platform</h2>
+    <p>바다를 스스로 청소하는 스마트 해양 모빌리티</p>
+  </div>
+</section>
+
+<!-- ===== SPEC BAND ===== -->
+<section class="spec-sec">
+  <div class="wrap">
+    <div class="spec-grid">
+      <div class="spec reveal"><div class="sv" data-count="1.5" data-dec="1">0<small>m/s</small></div><div class="sl">최대 속도</div></div>
+      <div class="spec reveal d1"><div class="sv" data-count="500" data-dec="0">0<small>L</small></div><div class="sl">저장 용량</div></div>
+      <div class="spec reveal d2"><div class="sv" data-count="100" data-dec="0">0<small>L/min</small></div><div class="sl">수거 속도</div></div>
+      <div class="spec reveal d3"><div class="sv">5–8<small>h</small></div><div class="sl">연속 운영</div></div>
+      <div class="spec reveal"><div class="sv" data-count="1" data-dec="0">0<small>km</small></div><div class="sl">원격 제어</div></div>
+      <div class="spec reveal d1"><div class="sv" data-count="200" data-dec="0">0<small>kg</small></div><div class="sl">본체 중량</div></div>
+    </div>
+    <p class="spec-note reveal">크기 1650 × 1930 × 1260 mm · 워터젯 추진 · IP67 방수 · LTE / RF 원격 통신</p>
+  </div>
+</section>
+
+<!-- ===== 3. 핵심 기능 ===== -->
+<section class="sec grey-bg" id="features">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="tag">Core Features</span>
+      <h2>핵심 기능</h2>
+      <p>탐지부터 수거, 도킹, 충전까지 — 사람의 개입 없이 스스로 완성하는 자율 청소 사이클.</p>
+    </div>
+    <div class="feat-grid">
+
+      <div class="feat reveal">
+        <div class="feat-visual">
+          <div class="cam-frame">
+            <div class="scanbar"></div>
+            <div class="bb b1"><span>PLASTIC</span></div>
+            <div class="bb b2"><span>FISHING NET</span></div>
+            <div class="bb b3"><span>CAN</span></div>
+          </div>
+        </div>
+        <div class="feat-body">
+          <div class="n">01</div>
+          <h3>AI 쓰레기 탐지</h3>
+          <p>전방 카메라와 딥러닝 비전이 수면의 부유 쓰레기를 실시간으로 인식하고 종류별로 분류합니다.</p>
+          <div class="chips"><span class="chip">Plastic</span><span class="chip">Fishing Net</span><span class="chip">Can</span><span class="chip">Real-time Detection</span></div>
+        </div>
+      </div>
+
+      <div class="feat reveal d1">
+        <div class="feat-visual">
+          <div class="intake">
+            <div class="arw"></div><div class="arw"></div><div class="arw"></div><div class="arw"></div><div class="arw"></div>
+          </div>
+        </div>
+        <div class="feat-body">
+          <div class="n">02</div>
+          <h3>자동 수거</h3>
+          <p>전면 흡입구가 물의 흐름을 만들어 쓰레기를 빨아들이고, 역류 방지 구조로 다시 흘러나가지 않게 저장합니다.</p>
+          <div class="chips"><span class="chip">흡입 수거</span><span class="chip">역류 방지</span><span class="chip">Water Flow</span></div>
+        </div>
+      </div>
+
+      <div class="feat reveal">
+        <div class="feat-visual">
+          <div class="prop">
+            <svg viewBox="0 0 100 100"><g fill="none" stroke="#00C8FF" stroke-width="3"><circle cx="50" cy="50" r="8" fill="#00C8FF"/><path d="M50 42 C40 20 20 25 30 45 C48 48 50 48 50 42Z" fill="rgba(0,200,255,.25)"/><path d="M58 50 C80 40 75 20 55 30 C52 48 52 50 58 50Z" fill="rgba(0,200,255,.25)"/><path d="M50 58 C60 80 80 75 70 55 C52 52 50 52 50 58Z" fill="rgba(0,200,255,.25)"/><path d="M42 50 C20 60 25 80 45 70 C48 52 48 50 42 50Z" fill="rgba(0,200,255,.25)"/></g></svg>
+          </div>
+        </div>
+        <div class="feat-body">
+          <div class="n">03</div>
+          <h3>프로펠러 보호</h3>
+          <p>추진체에 이물질이 감기지 않도록 가드 구조를 적용해 그물·로프가 많은 해역에서도 안정적으로 운항합니다.</p>
+          <div class="chips"><span class="chip">감김 방지</span><span class="chip">추진체 가드</span><span class="chip">안정 운항</span></div>
+        </div>
+      </div>
+
+      <div class="feat reveal d1">
+        <div class="feat-visual">
+          <div class="dock">
+            <div class="ring"></div><div class="ring"></div><div class="ring"></div>
+            <div class="core"></div>
+          </div>
+        </div>
+        <div class="feat-body">
+          <div class="n">04</div>
+          <h3>자동 도킹</h3>
+          <p>배터리가 부족하거나 저장함이 가득 차면 스스로 충전소에 접근·정렬하여 도킹하고 충전을 시작합니다.</p>
+          <div class="chips"><span class="chip">충전소 접근</span><span class="chip">자동 정렬</span><span class="chip">무인 충전</span></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ===== 4. Water to Land ===== -->
+<section class="w2l" id="w2l">
+  <div class="wrap">
+    <div class="w2l-head reveal">
+      <span class="tag">Water to Land</span>
+      <h2>물에서 육지로, <span class="g">경계 없는 이동.</span></h2>
+    </div>
+
+    <figure class="land-photo reveal d1">
+      <img src="images/ggulguk-land.png" alt="GGULGUK 육상 주행 모드 - 바퀴 전개" onerror="this.closest('figure').style.display='none'">
+      <span class="lp-badge">● LAND MODE · WHEELS DEPLOYED</span>
+      <figcaption>해안 도크에 닿는 순간 하부 패널이 열리고 숨겨진 바퀴가 전개되어, 수거장까지 스스로 주행합니다.</figcaption>
+    </figure>
+
+  <div class="split">
+    <div class="reveal">
+      <p class="lead">물속을 항해하다 해안에 닿는 순간, 하부 패널이 열리고 숨겨진 바퀴가 내려옵니다. 하나의 플랫폼으로 육상과 해상을 자유롭게 이동합니다.</p>
+      <div class="modes">
+        <div class="mode">
+          <div class="mi"><svg viewBox="0 0 24 24"><path d="M3 15c2 0 2-2 4-2s2 2 4 2 2-2 4-2 2 2 4 2M3 19c2 0 2-2 4-2s2 2 4 2 2-2 4-2 2 2 4 2"/></svg></div>
+          <h4>해상 모드</h4>
+          <p>워터젯 추진으로 부유 쓰레기를 순찰·수거</p>
+        </div>
+        <div class="mode">
+          <div class="mi"><svg viewBox="0 0 24 24"><circle cx="7" cy="17" r="3"/><circle cx="17" cy="17" r="3"/><path d="M4 12h16v3M6 12l2-5h6l3 5"/></svg></div>
+          <h4>육상 모드</h4>
+          <p>바퀴 전개 후 도크·수거장까지 자율 주행</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="reveal d1">
+      <div class="stage" id="stage">
+        <div class="waterline"></div>
+        <svg class="veh" id="veh" viewBox="0 0 150 70">
+          <path d="M8 34 Q8 14 40 14 L96 14 Q140 14 140 44 L140 54 Q140 60 132 60 L16 60 Q8 60 8 52 Z" fill="#eef3f9"/>
+          <rect x="40" y="20" width="30" height="12" rx="4" fill="#1a2536"/>
+          <rect x="96" y="24" width="34" height="22" rx="6" fill="#8fb4e6" opacity=".8"/>
+          <rect x="96" y="18" width="6" height="4" rx="2" fill="#00C8FF"/>
+          <rect x="106" y="18" width="6" height="4" rx="2" fill="#00C8FF"/>
+          <rect x="116" y="18" width="6" height="4" rx="2" fill="#00C8FF"/>
+          <!-- wheels (hidden initially) -->
+          <g id="wheels" style="opacity:0;transform:translateY(-8px);transition:.6s;">
+            <circle class="wheel" cx="40" cy="62" r="9" fill="#1a2536"/><circle cx="40" cy="62" r="3.5" fill="#00C8FF"/>
+            <circle class="wheel" cx="108" cy="62" r="9" fill="#1a2536"/><circle cx="108" cy="62" r="3.5" fill="#00C8FF"/>
+          </g>
+        </svg>
+        <div class="label" id="stageLabel">SEA MODE</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 5. Dashboard ===== -->
+<section class="dash-sec" id="dashboard">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="tag">Live Operations</span>
+      <h2 style="color:#fff">실시간 관제</h2>
+      <p style="color:var(--dmuted)">운항 중인 모든 유닛의 위치·상태·수거량을 하나의 대시보드에서 실시간으로 확인합니다.</p>
+    </div>
+    <div class="dashboard reveal">
+      <div class="dash-top">
+        <span class="dot"></span>
+        <b>GGULGUK Fleet Control</b>
+        <span class="live">● LIVE · 3 UNITS ACTIVE</span>
+      </div>
+      <div class="dash-grid">
+        <div class="dash-map">
+          <div class="map-grid"></div>
+          <div class="map-water"></div>
+          <svg class="path" viewBox="0 0 100 100" preserveAspectRatio="none">
+            <path d="M15 30 Q40 20 55 45 T85 70" stroke="rgba(0,200,255,.4)" stroke-width=".5" fill="none" stroke-dasharray="2 2"/>
+            <path d="M25 75 Q45 60 70 68" stroke="rgba(47,128,255,.4)" stroke-width=".5" fill="none" stroke-dasharray="2 2"/>
+          </svg>
+          <div class="bot" style="top:28%;left:14%"><div class="b-label">UNIT-01 · 수거중</div><div class="b-ping"></div><div class="b-core"></div></div>
+          <div class="bot" style="top:66%;left:66%"><div class="b-label">UNIT-02 · 순찰</div><div class="b-ping"></div><div class="b-core"></div></div>
+          <div class="bot" style="top:74%;left:24%"><div class="b-label">UNIT-03 · 도킹중</div><div class="b-ping"></div><div class="b-core"></div></div>
+        </div>
+        <div class="dash-side">
+          <div class="mini">
+            <div class="d-card blue"><div class="dl">오늘 수거량</div><div class="dv" data-count="284.6" data-dec="1">0<small>kg</small></div></div>
+            <div class="d-card"><div class="dl">AI Detection</div><div class="dv" data-count="1462" data-dec="0" style="color:#fff">0<small>건</small></div></div>
+          </div>
+          <div class="d-card">
+            <div class="dl">Mission Progress</div>
+            <div class="dv" style="color:#fff">Zone C · <span data-count="72" data-dec="0">0</span><small>%</small></div>
+            <div class="bar"><i data-w="72"></i></div>
+          </div>
+          <div class="d-card">
+            <div class="dl">Fleet Battery</div>
+            <div class="batt-row"><span style="width:70px">UNIT-01</span><div class="bar" style="flex:1;margin-top:0"><i data-w="86"></i></div><b style="color:#fff">86%</b></div>
+            <div class="batt-row"><span style="width:70px">UNIT-02</span><div class="bar" style="flex:1;margin-top:0"><i data-w="64"></i></div><b style="color:#fff">64%</b></div>
+            <div class="batt-row"><span style="width:70px">UNIT-03</span><div class="bar" style="flex:1;margin-top:0"><i data-w="23"></i></div><b style="color:#ffc24b">23%</b></div>
+          </div>
+          <div class="mini">
+            <div class="d-card"><div class="dl">GPS 정확도</div><div class="dv" style="color:#fff;font-size:20px">±0.4<small>m</small></div></div>
+            <div class="d-card"><div class="dl">운항 시간</div><div class="dv" style="color:#fff;font-size:20px" data-count="6.2" data-dec="1">0<small>h</small></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 6. Process ===== -->
+<section class="sec" id="process">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="tag">Operation Flow</span>
+      <h2>운영 프로세스</h2>
+      <p>탐지에서 데이터 분석까지, 7단계로 완결되는 자율 운영 사이클.</p>
+    </div>
+    <div class="proc">
+      <div class="pstep reveal">
+        <div class="pn">STEP 01</div>
+        <div class="pico"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg></div>
+        <h4>AI 탐지</h4>
+      </div>
+      <div class="pstep reveal">
+        <div class="pn">STEP 02</div>
+        <div class="pico"><svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div>
+        <h4>접근</h4>
+      </div>
+      <div class="pstep reveal">
+        <div class="pn">STEP 03</div>
+        <div class="pico"><svg viewBox="0 0 24 24"><path d="M4 13h16l-2 6H6l-2-6Z"/><path d="M8 13V9a4 4 0 0 1 8 0v4"/></svg></div>
+        <h4>수거</h4>
+      </div>
+      <div class="pstep reveal">
+        <div class="pn">STEP 04</div>
+        <div class="pico"><svg viewBox="0 0 24 24"><rect x="4" y="7" width="16" height="13" rx="2"/><path d="M9 7V5a3 3 0 0 1 6 0v2"/></svg></div>
+        <h4>저장</h4>
+      </div>
+      <div class="pstep reveal">
+        <div class="pn">STEP 05</div>
+        <div class="pico"><svg viewBox="0 0 24 24"><path d="M12 3v6M12 3l3 3M12 3L9 6"/><rect x="5" y="11" width="14" height="9" rx="2"/></svg></div>
+        <h4>도킹</h4>
+      </div>
+      <div class="pstep reveal">
+        <div class="pn">STEP 06</div>
+        <div class="pico"><svg viewBox="0 0 24 24"><path d="M13 2 4 14h7l-1 8 9-12h-7l1-8Z"/></svg></div>
+        <h4>충전</h4>
+      </div>
+      <div class="pstep reveal">
+        <div class="pn">STEP 07</div>
+        <div class="pico"><svg viewBox="0 0 24 24"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg></div>
+        <h4>데이터 분석</h4>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 7. Data ===== -->
+<section class="data-sec" id="data">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="tag">Data & Impact</span>
+      <h2 style="color:#fff">데이터가 증명하는 성과</h2>
+      <p style="color:var(--dmuted)">모든 운항 데이터는 실시간으로 집계·분석되어 해양 환경 회복의 근거가 됩니다.</p>
+    </div>
+    <div class="data-grid reveal">
+      <div class="data-cell"><div class="num" data-count="284.6" data-dec="1">0<small>kg</small></div><div class="dlab">오늘 수거량</div></div>
+      <div class="data-cell"><div class="num" data-count="98.4" data-dec="1">0<small>%</small></div><div class="dlab">AI 정확도</div></div>
+      <div class="data-cell"><div class="num" data-count="1240" data-dec="0">0<small>km</small></div><div class="dlab">누적 운항거리</div></div>
+      <div class="data-cell"><div class="num" data-count="12.6" data-dec="1">0<small>t</small></div><div class="dlab">CO₂ 절감</div></div>
+      <div class="data-cell"><div class="num" data-count="8.4" data-dec="1">0<small>t</small></div><div class="dlab">플라스틱 제거량</div></div>
+    </div>
+    <div class="chart reveal">
+      <h4>주간 수거량 추이 (kg)</h4>
+      <div class="bars" id="bars">
+        <div class="col"><div class="b" data-h="45"></div><div class="cl">월</div></div>
+        <div class="col"><div class="b" data-h="62"></div><div class="cl">화</div></div>
+        <div class="col"><div class="b" data-h="55"></div><div class="cl">수</div></div>
+        <div class="col"><div class="b" data-h="80"></div><div class="cl">목</div></div>
+        <div class="col"><div class="b" data-h="70"></div><div class="cl">금</div></div>
+        <div class="col"><div class="b" data-h="92"></div><div class="cl">토</div></div>
+        <div class="col"><div class="b" data-h="100"></div><div class="cl">일</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 8. 적용 분야 ===== -->
+<section class="sec grey-bg" id="applications">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="tag">Applications</span>
+      <h2>적용 분야</h2>
+      <p>연안부터 내수면까지, 물이 있는 모든 현장에서 GGULGUK가 활약합니다.</p>
+    </div>
+    <div class="apps">
+      <div class="app reveal"><div class="ai"><svg viewBox="0 0 24 24"><path d="M3 21h18M5 21V10l7-5 7 5v11M9 21v-6h6v6"/></svg></div><h4>항만</h4><p>선박 통행이 많은 항만 수면 관리</p></div>
+      <div class="app reveal d1"><div class="ai"><svg viewBox="0 0 24 24"><path d="M4 20h16M12 4v16M12 4l6 4-6 3"/></svg></div><h4>마리나</h4><p>요트·레저 계류장 청결 유지</p></div>
+      <div class="app reveal d2"><div class="ai"><svg viewBox="0 0 24 24"><path d="M3 12c3 0 3-3 6-3s3 3 6 3 3-3 6-3M3 18c3 0 3-3 6-3s3 3 6 3 3-3 6-3"/></svg></div><h4>하천</h4><p>도심 하천 부유물 상시 수거</p></div>
+      <div class="app reveal d3"><div class="ai"><svg viewBox="0 0 24 24"><ellipse cx="12" cy="12" rx="9" ry="6"/><path d="M6 12c2 2 10 2 12 0"/></svg></div><h4>저수지</h4><p>취수원·농업용수 수질 보호</p></div>
+      <div class="app reveal"><div class="ai"><svg viewBox="0 0 24 24"><path d="M3 18h18M3 18c4-6 14-6 18 0M8 10a4 4 0 0 1 8 0"/></svg></div><h4>해안</h4><p>해변가 파래·쓰레기 회수</p></div>
+      <div class="app reveal d1"><div class="ai"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M8 12h8M12 8v8"/></svg></div><h4>관광지</h4><p>관광 수변 경관 유지 관리</p></div>
+      <div class="app reveal d2"><div class="ai"><svg viewBox="0 0 24 24"><path d="M2 12c3-4 7-4 10 0s7 4 10 0M6 12v4M18 12v4"/></svg></div><h4>양식장</h4><p>양식 구역 수질·부유물 관리</p></div>
+      <div class="app reveal d3"><div class="ai"><svg viewBox="0 0 24 24"><path d="M12 3v18M3 8l9-5 9 5M5 10v8h14v-8"/></svg></div><h4>댐·호수</h4><p>대형 수면 광역 순찰 수거</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 9. FINAL ===== -->
+<section class="final" id="final">
+  <div class="final-bg"></div>
+  <div class="final-inner">
+    <h2>The Future of<br><span class="g">Smart Marine Cleaning</span></h2>
+    <p>AI가 만드는 깨끗한 바다</p>
+    <div class="bigbrand">
+      <span class="bl">GGUL</span><span class="bg">G</span><svg class="bk" viewBox="0 0 30 32"><rect class="sq" x="8" y="1" width="6.2" height="6.2" rx="1.8"/><rect class="sq" x="15.8" y="1" width="6.2" height="6.2" rx="1.8"/><path class="bin" d="M4 12.5Q4 11 5.6 11H24.4Q26 11 26 12.5L24.5 23.6Q24 29.5 18.3 29.5H11.7Q6 29.5 5.5 23.6Z"/></svg><span class="bg">K</span>
+    </div>
+    <div class="btn-final">
+      <a href="dashboard.html" class="btn primary">실시간 관제 시스템 열기
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ===== FOOTER ===== -->
+<footer>
+  <div class="wrap foot">
+    <div class="fb"><span class="bl">GGUL</span><span class="bg">G</span><svg class="bk" viewBox="0 0 30 32"><rect class="sq" x="8" y="1" width="6.2" height="6.2" rx="1.8"/><rect class="sq" x="15.8" y="1" width="6.2" height="6.2" rx="1.8"/><path class="bin" d="M4 12.5Q4 11 5.6 11H24.4Q26 11 26 12.5L24.5 23.6Q24 29.5 18.3 29.5H11.7Q6 29.5 5.5 23.6Z"/></svg><span class="bg">K</span></div>
+    <div>© 2026 GGULGUK · AI Autonomous Marine Cleaning Platform</div>
+  </div>
+</footer>
+
+<script>
+  // Nav solidify on scroll
+  const nav=document.getElementById('nav');
+  const onScroll=()=>{ nav.classList.toggle('solid', window.scrollY>60); };
+  window.addEventListener('scroll',onScroll,{passive:true}); onScroll();
+
+  // Close mobile menu
+  document.querySelectorAll('#navlinks a').forEach(a=>a.addEventListener('click',()=>document.getElementById('navlinks').classList.remove('open')));
+
+  // Hero: clean up trash as user scrolls past hero
+  const hero=document.querySelector('.hero');
+  window.addEventListener('scroll',()=>{
+    hero.classList.toggle('clean', window.scrollY>120);
+  },{passive:true});
+
+  // Generic reveal
+  const io=new IntersectionObserver((es)=>{
+    es.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target);} });
+  },{threshold:.16});
+  document.querySelectorAll('.reveal, .reveal-sec').forEach(el=>io.observe(el));
+
+  // Count-up
+  function countUp(el){
+    const t=parseFloat(el.dataset.count), dec=parseInt(el.dataset.dec||0);
+    const small=el.querySelector('small')?.outerHTML||'';
+    let s=null;
+    function tick(ts){ if(!s)s=ts; const p=Math.min((ts-s)/1500,1); const e=1-Math.pow(1-p,3);
+      const v=(t*e).toFixed(dec);
+      el.innerHTML=Number(v).toLocaleString('ko-KR',{minimumFractionDigits:dec,maximumFractionDigits:dec})+small;
+      if(p<1)requestAnimationFrame(tick);
+    } requestAnimationFrame(tick);
+  }
+  const cIO=new IntersectionObserver((es)=>{es.forEach(e=>{if(e.isIntersecting){countUp(e.target);cIO.unobserve(e.target);}})},{threshold:.5});
+  document.querySelectorAll('[data-count]').forEach(el=>cIO.observe(el));
+
+  // Bars + progress fills
+  const fillIO=new IntersectionObserver((es)=>{es.forEach(e=>{if(e.isIntersecting){
+    e.target.querySelectorAll('.b[data-h]').forEach(b=>b.style.height=b.dataset.h+'%');
+    e.target.querySelectorAll('i[data-w]').forEach(i=>i.style.width=i.dataset.w+'%');
+    fillIO.unobserve(e.target);
+  }})},{threshold:.3});
+  document.querySelectorAll('#bars, .dashboard').forEach(el=>fillIO.observe(el));
+
+  // Water-to-Land stage animation
+  const stage=document.getElementById('stage');
+  const veh=document.getElementById('veh');
+  const wheels=document.getElementById('wheels');
+  const stageLabel=document.getElementById('stageLabel');
+  let played=false;
+  const stageIO=new IntersectionObserver((es)=>{es.forEach(e=>{ if(e.isIntersecting && !played){ played=true; runStage(); }})},{threshold:.5});
+  stageIO.observe(stage);
+  function runStage(){
+    // move across water, then rise onto land, deploy wheels
+    veh.animate([
+      {left:'-30%', top:'38%'},
+      {left:'30%', top:'40%'},
+      {left:'55%', top:'30%'}
+    ],{duration:2600,fill:'forwards',easing:'ease-in-out'});
+    setTimeout(()=>{ wheels.style.opacity=1; wheels.style.transform='translateY(0)'; stageLabel.textContent='LAND MODE · WHEELS DEPLOYED'; },2600);
+    setTimeout(()=>{
+      veh.animate([{left:'55%',top:'30%'},{left:'80%',top:'30%'}],{duration:1800,fill:'forwards',easing:'ease-in-out'});
+    },3200);
+  }
+</script>
+</body>
+</html>
